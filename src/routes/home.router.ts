@@ -1,4 +1,4 @@
-import { ResponseCode, ResponseMessage } from 'common/common.const';
+import { ResponseCode, ResponseMessage } from '../common/common.consts';
 import express, { Request, Response } from 'express';
 export const homeRouter = express.Router();
 
