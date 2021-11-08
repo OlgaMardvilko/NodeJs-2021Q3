@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import * as UserService from '../services/users.service';
 import { userValidationSchema } from '../validations/user.schema';
-import { ResponseCode, ResponseMessage } from '../common/common.const';
+import { ResponseCode, ResponseMessage } from '../common/common.consts';
+
+const DEFAULT_LIMIT = 10;
 
 const getUserById = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -64,7 +66,7 @@ const updateUser = async (req: Request, res: Response) => {
 
 const getUsersList = async (req: Request, res: Response) => {
   const loginSubstring = req.query.loginSubstring ? req.query.loginSubstring.toString() : '';
-  const limit = Number(req.query.limit) || 10;
+  const limit = Number(req.query.limit) || DEFAULT_LIMIT;
 
   try {
     const users = await UserService.getAutoSuggestUsers(loginSubstring, limit);
