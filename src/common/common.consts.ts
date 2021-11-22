@@ -10,4 +10,7 @@ export enum ResponseMessage {
   HomePageSuccess = 'Hello World!',
   NotFoundUser = 'User not found',
   NotFoundUsers = 'Users not found',
+  NotFoundGroup = 'Group not found',
+  NotFoundGroups = 'Groups not found',
+  NotAddedUsersToGroup = 'Not added users to group',
 }
