@@ -1,5 +1,6 @@
 import { DataTypes, Model, UUIDV4 } from 'sequelize';
 import { sequelize } from '../data-access/db';
+import { GroupModel } from './group.model';
 import { IUser, IBaseUser } from './user.interface';
 
 export class UserModel extends Model<IUser, IBaseUser> implements IUser {
@@ -43,4 +44,23 @@ UserModel.init(
     sequelize,
     modelName: 'User',
   },
-)
+);
+
+export const UserGroupModel = sequelize.define(
+  'UserGroup',
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      primaryKey: true,
+      allowNull: false,
+    },
+  },
+  {
+    tableName: 'user_group',
+    timestamps: false
+  },
+);
+
+UserModel.belongsToMany(GroupModel, { through: UserGroupModel });
+GroupModel.belongsToMany(UserModel, { through: UserGroupModel });
