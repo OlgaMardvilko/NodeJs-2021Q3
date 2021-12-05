@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as UserService from '../services/users.service';
 import { userValidationSchema } from '../validations/user.schema';
 import { ResponseCode, ResponseMessage } from '../common/common.consts';
+import { logger } from '../common/logger';
 
 const DEFAULT_LIMIT = 10;
 
@@ -17,7 +18,8 @@ const getUserById = async (req: Request, res: Response) => {
 
     res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundUser);
   } catch (e) {
-    res.status(500).send(e);
+    res.status(ResponseCode.ServiceError).send(e);
+    logger.error(`getUserById(${id}): ${JSON.stringify(e)}`);
   }
 };
 
@@ -38,6 +40,7 @@ const createUser = async (req: Request, res: Response) => {
       res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundUser);
     } catch (e) {
       res.status(ResponseCode.ServiceError).send(e);
+      logger.error(`createUser(${userData}): ${JSON.stringify(e)}`);
     }
   }
 };
@@ -60,6 +63,7 @@ const updateUser = async (req: Request, res: Response) => {
       res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundUser);
     } catch (e) {
       res.status(ResponseCode.ServiceError).send(e);
+      logger.error(`updateUser(${userData}, ${id}): ${JSON.stringify(e)}`);
     }
   }
 };
@@ -78,6 +82,7 @@ const getUsersList = async (req: Request, res: Response) => {
     res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundUsers);
   } catch (e) {
     res.status(ResponseCode.ServiceError).send(e);
+    logger.error(`getUsersList(${loginSubstring}): ${JSON.stringify(e)}`);
   }
 };
 
@@ -94,6 +99,7 @@ const removeUser = async (req: Request, res: Response) => {
     res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundUser);
   } catch (e) {
     res.status(ResponseCode.ServiceError).send(e);
+    logger.error(`getUsersList(${id}): ${JSON.stringify(e)}`);
   }
 };
 

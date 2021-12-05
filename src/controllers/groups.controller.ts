@@ -2,8 +2,7 @@ import { Request, Response } from 'express';
 import * as GroupService from '../services/groups.service';
 import { groupValidationSchema } from '../validations/group.schema';
 import { ResponseCode, ResponseMessage } from '../common/common.consts';
-
-const DEFAULT_LIMIT = 10;
+import { logger } from '../common/logger';
 
 const getGroupById = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -18,6 +17,7 @@ const getGroupById = async (req: Request, res: Response) => {
     res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundGroup);
   } catch (e) {
     res.status(ResponseCode.ServiceError).send(e);
+    logger.error(`getGroupById(${id}): ${JSON.stringify(e)}`);
   }
 };
 
@@ -38,6 +38,7 @@ const createGroup = async (req: Request, res: Response) => {
       res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundGroup);
     } catch (e) {
       res.status(ResponseCode.ServiceError).send(e);
+      logger.error(`createGroup(${groupData}): ${JSON.stringify(e)}`);
     }
   }
 };
@@ -60,6 +61,7 @@ const updateGroup = async (req: Request, res: Response) => {
       res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundGroup);
     } catch (e) {
       res.status(ResponseCode.ServiceError).send(e);
+      logger.error(`createGroup(${groupData}, ${id}): ${JSON.stringify(e)}`);
     }
   }
 };
@@ -75,6 +77,7 @@ const getGroupsList = async (req: Request, res: Response) => {
     res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundGroups);
   } catch (e) {
     res.status(ResponseCode.ServiceError).send(e);
+    logger.error(`getGroupsList(): ${JSON.stringify(e)}`);
   }
 };
 
@@ -91,6 +94,7 @@ const removeGroup = async (req: Request, res: Response) => {
     res.status(ResponseCode.NotFound).send(ResponseMessage.NotFoundGroup);
   } catch (e) {
     res.status(ResponseCode.ServiceError).send(e);
+    logger.error(`removeGroup(${id}): ${JSON.stringify(e)}`);
   }
 };
 
@@ -108,6 +112,7 @@ const addUsersToGroup = async (req: Request, res: Response) => {
     res.status(ResponseCode.NotFound).send(ResponseMessage.NotAddedUsersToGroup);
   } catch (e) {
     res.status(ResponseCode.ServiceError).send(e);
+    logger.error(`addUsersToGroup(${id}, ${userIds}): ${JSON.stringify(e)}`);
   }
 };
 
