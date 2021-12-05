@@ -3,6 +3,8 @@ import { sequelize } from './data-access/db';
 import { usersRouter } from './routes/users.router';
 import { homeRouter } from './routes/home.router';
 import { groupsRouter } from './routes/groups.router';
+import { errorMiddleware, loggerMiddleware } from './middlewares/loggers.middleware';
+import { logger } from './common/logger';
 
 const PORT: number = Number(process.env.port) || 3000;
 const green = (text: number) => `\x1b[32m${text}\x1b[0m`;
@@ -17,6 +19,8 @@ router.use('/users', usersRouter);
 router.use('/groups', groupsRouter);
 router.use('/', homeRouter);
 
+app.use(loggerMiddleware);
+app.use(errorMiddleware);
 app.use('/api', router);
 
 app.listen(PORT, async() => {
@@ -33,4 +37,12 @@ app.listen(PORT, async() => {
     // eslint-disable-next-line no-console
     console.error(`Unable to connect to DB: ${error}`);
   }
+});
+
+process.on('uncaughtException', error => {
+  logger.error(`uncaughtException: ${JSON.stringify(error)}`);
+});
+
+process.on('unhandledRejection', error => {
+  logger.error(`unhandledRejection: ${JSON.stringify(error)}`);
 });
