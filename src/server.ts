@@ -5,11 +5,17 @@ import { homeRouter } from './routes/home.router';
 import { groupsRouter } from './routes/groups.router';
 import { errorMiddleware, loggerMiddleware } from './middlewares/loggers.middleware';
 import { logger } from './common/logger';
+import { Config } from './common/config';
+import cors, { CorsOptions } from 'cors';
 
-const PORT: number = Number(process.env.port) || 3000;
+const PORT = Config.PORT || 3000;
 const green = (text: number) => `\x1b[32m${text}\x1b[0m`;
 const app = express();
 const router: Express = express();
+const corsOptions: CorsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+};
 
 router.use(express.urlencoded({ extended: false }));
 router.use(express.json());
@@ -19,6 +25,7 @@ router.use('/users', usersRouter);
 router.use('/groups', groupsRouter);
 router.use('/', homeRouter);
 
+app.use(cors(corsOptions));
 app.use(loggerMiddleware);
 app.use(errorMiddleware);
 app.use('/api', router);

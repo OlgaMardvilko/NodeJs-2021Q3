@@ -4,6 +4,8 @@ export enum ResponseCode {
   BadRequest = 400,
   NotFound = 404,
   ServiceError = 500,
+  Unauthorized = 401,
+  Forbidden = 403,
 }
 
 export enum ResponseMessage {
