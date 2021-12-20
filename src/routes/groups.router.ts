@@ -1,10 +1,12 @@
 import express from 'express';
 import GroupController from '../controllers/groups.controller';
+import { authMiddleware } from '../middlewares/auth.middleware';
+
 export const groupsRouter = express.Router();
 
-groupsRouter.get('/', GroupController.getGroupsList);
-groupsRouter.get('/:id', GroupController.getGroupById);
-groupsRouter.post('/', GroupController.createGroup);
-groupsRouter.post('/:id/add-users', GroupController.addUsersToGroup);
-groupsRouter.put('/:id', GroupController.updateGroup);
-groupsRouter.delete('/:id', GroupController.removeGroup);
+groupsRouter.get('/', authMiddleware, GroupController.getGroupsList);
+groupsRouter.get('/:id', authMiddleware, GroupController.getGroupById);
+groupsRouter.post('/', authMiddleware, GroupController.createGroup);
+groupsRouter.post('/:id/add-users', authMiddleware, GroupController.addUsersToGroup);
+groupsRouter.put('/:id', authMiddleware, GroupController.updateGroup);
+groupsRouter.delete('/:id', authMiddleware, GroupController.removeGroup);

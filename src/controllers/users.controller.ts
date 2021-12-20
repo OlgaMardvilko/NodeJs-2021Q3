@@ -6,6 +6,22 @@ import { logger } from '../common/logger';
 
 const DEFAULT_LIMIT = 10;
 
+const login = async (req: Request, res: Response) => {
+  const { login, password } = req.body;
+
+    try {
+      const jwtToken: string | null = await UserService.login(login, password);
+
+      if (jwtToken) {
+        res.status(ResponseCode.Success).send({ access_token: jwtToken });
+      } else {
+        res.status(ResponseCode.Unauthorized).send();
+      }
+    } catch (e) {
+      logger.error(`login(${login}, ${password}): ${JSON.stringify(e)}`);
+    }
+};
+
 const getUserById = async (req: Request, res: Response) => {
   const id = req.params.id;
 
@@ -103,4 +119,4 @@ const removeUser = async (req: Request, res: Response) => {
   }
 };
 
-export default { getUserById, createUser, updateUser, getUsersList, removeUser };
+export default { login, getUserById, createUser, updateUser, getUsersList, removeUser };
